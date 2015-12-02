@@ -6,10 +6,13 @@
 	<link href="/bootstrap-dark.css" rel="stylesheet" />
 	<link href="/style.css" rel="stylesheet" />
 	<script src="/angular/angular.js"></script>
-	<script src="app.js"></script>	
+	<script src="app.js"></script>
+	<script src="albumControl.js"></script>
+	<script src="playerControl.js"></script>
+
 </head>
 <body ng-app="juke">
-	<div id="main" class="container-fluid" ng-controller="MainControl">
+	<div id="main" class="container-fluid">
 		<div class="col-xs-2">
 			<sidebar>
         <img src="juke.svg" class="logo">
@@ -21,8 +24,8 @@
 			</sidebar>
 		</div>
 
-		<div class="col-xs-10" ng-controller="MainDisplay">
-		<div class="album">
+		<div class="col-xs-10">
+		<div class="album" ng-controller= "AlbumControl">
 			<p>
 				<h3>{{album.name}}</h3>
 				<img ng-src="{{getAlbumImage()}}" class="img-thumbnail">
@@ -39,10 +42,10 @@
 				<tbody>
 					<tr ng-repeat = "song in album.songs" ng-class="{ active: currentSong === song._id }">
 						<td>
-	                   		<button class="btn btn-default btn-xs" ng-click="playSong(song._id)" ng-hide="isPlaying() && currentSong === song._id">
+	                   		<button class="btn btn-default btn-xs" ng-click="playSong(song._id)" ng-hide="isPlaying && currentSong === song._id">
                         		<span class="glyphicon glyphicon-play"></span>
 							</button>
-							<button class="btn btn-default btn-xs" ng-click="pauseSong()" ng-show="isPlaying() && currentSong === song._id">
+							<button class="btn btn-default btn-xs" ng-click="pauseSong()" ng-show="isPlaying && currentSong === song._id">
 								<span class="glyphicon glyphicon-pause"></span>
 							</button>
 
@@ -65,7 +68,7 @@
 		</div>
 
 		<footer>
-			<div ng-show="!!currentSong">
+			<div ng-show="!!currentSong" ng-controller="PlayerControl">
 				<div class="pull-left">
 					<button class="btn btn-default" ng-click="previousSong()">
 						<span class="glyphicon glyphicon-step-backward"></span>
