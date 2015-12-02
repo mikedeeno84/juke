@@ -26,8 +26,7 @@
 		<div class="album">
 			<p>
 				<h3>{{album.name}}</h3>
-				<img ng-src="{{album.imageUrl}}" class =
-				"img-thumbnail">
+				<img ng-src="{{getAlbumImage()}}" class="img-thumbnail">
 			</p>
 			<table class="table">
 				<thead>
@@ -39,11 +38,15 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat = "song in album.songs">
+					<tr ng-repeat = "song in album.songs" ng-class="{ active: currentSong === song._id }">
 						<td>
-	                   		<button class="btn btn-default btn-xs">
+	                   		<button class="btn btn-default btn-xs" ng-click="playSong(song._id)" ng-hide="isPlaying() && currentSong === song._id">
                         		<span class="glyphicon glyphicon-play"></span>
-                    		</button>
+							</button>
+							<button class="btn btn-default btn-xs" ng-click="pauseSong()" ng-show="isPlaying() && currentSong === song._id">
+								<span class="glyphicon glyphicon-pause"></span>
+							</button>
+
 						</td>
 						<td>{{song.name}}</td>
 						<td>
@@ -62,7 +65,29 @@
 			
 		</div>
 
-		<footer></footer>
+		<footer>
+			<div ng-show="!!currentSong">
+				<div class="pull-left">
+					<button class="btn btn-default">
+						<span class="glyphicon glyphicon-step-backward"></span>
+					</button>
+					<button class="btn btn-default" ng-click="playSong()" ng-hide="isPlaying()">
+						<span class="glyphicon glyphicon-play"></span>
+					</button>
+					<button class="btn btn-default" ng-click="pauseSong()" ng-show="isPlaying()">
+						<span class="glyphicon glyphicon-pause"></span>
+					</button>
+					<button class="btn btn-default">
+						<span class="glyphicon glyphicon-step-forward"></span>
+					</button>
+				</div>
+				<div class="bar">
+					<div class="progress">
+						<div class="progress-bar"></div>
+					</div>
+				</div>
+			</div>
+		</footer>
 
 	</div>
 </body>
