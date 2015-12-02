@@ -22,7 +22,6 @@
 		</div>
 
 		<div class="col-xs-10" ng-controller="MainDisplay">
-
 		<div class="album">
 			<p>
 				<h3>{{album.name}}</h3>
@@ -68,7 +67,7 @@
 		<footer>
 			<div ng-show="!!currentSong">
 				<div class="pull-left">
-					<button class="btn btn-default">
+					<button class="btn btn-default" ng-click="previousSong()">
 						<span class="glyphicon glyphicon-step-backward"></span>
 					</button>
 					<button class="btn btn-default" ng-click="playSong()" ng-hide="isPlaying()">
@@ -77,13 +76,13 @@
 					<button class="btn btn-default" ng-click="pauseSong()" ng-show="isPlaying()">
 						<span class="glyphicon glyphicon-pause"></span>
 					</button>
-					<button class="btn btn-default">
+					<button class="btn btn-default" ng-click="nextSong()">
 						<span class="glyphicon glyphicon-step-forward"></span>
 					</button>
 				</div>
 				<div class="bar">
 					<div class="progress">
-						<div class="progress-bar"></div>
+						<div class="progress-bar" ng-style="{width: progress + '%'}"></div>
 					</div>
 				</div>
 			</div>
