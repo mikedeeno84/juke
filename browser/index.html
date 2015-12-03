@@ -82,9 +82,12 @@
 					<button class="btn btn-default" ng-click="nextSong()">
 						<span class="glyphicon glyphicon-step-forward"></span>
 					</button>
+					<button class="btn btn-default" ng-class="{active: shuffleOn}" ng-click="playRandom()">
+						<span class="glyphicon glyphicon-random" ></span>
+					</button>
 				</div>
 				<div class="bar">
-					<div class="progress">
+					<div class="progress" ng-click="progressBarClick($event)">
 						<div class="progress-bar" ng-style="{width: progress + '%'}"></div>
 					</div>
 				</div>
