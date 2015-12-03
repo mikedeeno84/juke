@@ -25,10 +25,10 @@
 		</div>
 
 		<div class="col-xs-10">
-		<div class="album" ng-controller= "AlbumControl">
+		<div class="album" ng-controller= "AlbumControl as albumCtrl">
 			<p>
-				<h3>{{album.name}}</h3>
-				<img ng-src="{{getAlbumImage()}}" class="img-thumbnail">
+				<h3>{{albumCtrl.album.name}}</h3>
+				<img ng-src="{{albumCtrl.getAlbumImage()}}" class="img-thumbnail">
 			</p>
 			<table class="table">
 				<thead>
@@ -40,19 +40,19 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat = "song in album.songs" ng-class="{ active: currentSong === song._id }">
+					<tr ng-repeat = "song in albumCtrl.album.songs" ng-class="{ active: albumCtrl.currentSong === song._id }">
 						<td>
-	                   		<button class="btn btn-default btn-xs" ng-click="playSong(song._id)" ng-hide="isPlaying && currentSong === song._id">
+	                   		<button class="btn btn-default btn-xs" ng-click="albumCtrl.playSong(song._id)" ng-hide="albumCtrl.isPlaying && albumCtrl.currentSong === song._id">
                         		<span class="glyphicon glyphicon-play"></span>
 							</button>
-							<button class="btn btn-default btn-xs" ng-click="pauseSong()" ng-show="isPlaying && currentSong === song._id">
+							<button class="btn btn-default btn-xs" ng-click="albumCtrl.pauseSong()" ng-show="albumCtrl.isPlaying && albumCtrl.currentSong === song._id">
 								<span class="glyphicon glyphicon-pause"></span>
 							</button>
 
 						</td>
 						<td>{{song.name}}</td>
 						<td>
-							{{getArtists(song)}}
+							{{albumCtrl.getArtists(song)}}
 						</td>
 						<td>
 							{{song.genres.join(", ")}}
@@ -68,27 +68,27 @@
 		</div>
 
 		<footer>
-			<div ng-show="!!currentSong" ng-controller="PlayerControl">
+			<div ng-show="!!plyrCtrl.currentSong" ng-controller="PlayerControl as plyrCtrl">
 				<div class="pull-left">
-					<button class="btn btn-default" ng-click="previousSong()">
+					<button class="btn btn-default" ng-click="plyrCtrl.previousSong()">
 						<span class="glyphicon glyphicon-step-backward"></span>
 					</button>
-					<button class="btn btn-default" ng-click="playSong()" ng-hide="isPlaying()">
+					<button class="btn btn-default" ng-click="plyrCtrl.playSong()" ng-hide="plyrCtrl.isPlaying()">
 						<span class="glyphicon glyphicon-play"></span>
 					</button>
-					<button class="btn btn-default" ng-click="pauseSong()" ng-show="isPlaying()">
+					<button class="btn btn-default" ng-click="plyrCtrl.pauseSong()" ng-show="plyrCtrl.isPlaying()">
 						<span class="glyphicon glyphicon-pause"></span>
 					</button>
-					<button class="btn btn-default" ng-click="nextSong()">
+					<button class="btn btn-default" ng-click="plyrCtrl.nextSong()">
 						<span class="glyphicon glyphicon-step-forward"></span>
 					</button>
-					<button class="btn btn-default" ng-class="{active: shuffleOn}" ng-click="playRandom()">
+					<button class="btn btn-default" ng-class="{active: plyrCtrl.shuffleOn}" ng-click="plyrCtrl.playRandom()">
 						<span class="glyphicon glyphicon-random" ></span>
 					</button>
 				</div>
 				<div class="bar">
-					<div class="progress" ng-click="progressBarClick($event)">
-						<div class="progress-bar" ng-style="{width: progress + '%'}"></div>
+					<div class="progress" ng-click="plyrCtrl.progressBarClick($event)">
+						<div class="progress-bar" ng-style="{width: plyrCtrl.progress + '%'}"></div>
 					</div>
 				</div>
 			</div>

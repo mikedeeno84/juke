@@ -1,68 +1,73 @@
 
 app.controller('PlayerControl', function($scope, $rootScope){
+	var $this=this;
 
-
-	$scope.currentSong = '';
+	$this.currentSong = '';
 	var trackIDs;
 	var audio = document.createElement('audio');
 	var shuffleList;
 	var orderedList;
-	$scope.shuffleOn = false;
+	$this.shuffleOn = false;
 	
 	//grab list of albums
 
 	//stuff is in seperate controller
 
-	$scope.isPlaying = function() {
+	$this.isPlaying = function() {
 		return !audio.paused;
 	}
 
-	$scope.nextSong = function(){
+	//fix $this error
+	$this.nextSong = function(){
 		var trackIndex;
+		var nowSong = $this.currentSong;
 		trackIDs.forEach(function(trackID, index){
-			if (trackID === $scope.currentSong) trackIndex = index +1;
+			if (trackID === nowSong) trackIndex = index +1;
 		})
-		if (trackIDs[trackIndex]) $scope.playSong(trackIDs[trackIndex]);
-		else $scope.playSong(trackIDs[0]);
+		if (trackIDs[trackIndex]) $this.playSong(trackIDs[trackIndex]);
+		else $this.playSong(trackIDs[0]);
 
 	}
-	$scope.previousSong = function(){
+
+	//fix $this error
+	$this.previousSong = function(){
 	var trackIndex;
+	var nowSong = $this.currentSong;
 	trackIDs.forEach(function(trackID, index){
-		if (trackID === $scope.currentSong) trackIndex = index -1;
+		if (trackID === nowSong) trackIndex = index -1;
 	})
-	if (trackIDs[trackIndex]) $scope.playSong(trackIDs[trackIndex]);
-	else $scope.playSong(trackIDs[0]);
+	if (trackIDs[trackIndex]) $this.playSong(trackIDs[trackIndex]);
+	else $this.playSong(trackIDs[0]);
 
 	}
 	audio.addEventListener('timeupdate', function () {
-	    $scope.progress = 100 * audio.currentTime / audio.duration;
+	    $this.progress = 100 * audio.currentTime / audio.duration;
 	    $scope.$digest();
 		});
 
-	$scope.playSong = function(songId) {
-			if (!songId || $scope.currentSong === songId) return audio.play();
+	$this.playSong = function(songId) {
+			if (!songId || $this.currentSong === songId) return audio.play();
 				
 			audio.pause();
-			$scope.currentSong = songId;
+			$this.currentSong = songId;
 			audio.src = '/api/songs/' + songId + '.audio';
 			audio.load();
 			audio.play();
 		}
 		
-	$scope.pauseSong = function() {
+	$this.pauseSong = function() {
 		audio.pause();
 	}
 	
-	$scope.playRandom = function() {
-		if ($scope.shuffleOn) {
-			$scope.shuffleOn = false;
+	$this.playRandom = function() {
+		if ($this.shuffleOn) {
+			$this.shuffleOn = false;
 			trackIDs = orderedList;
 			audio.pause();
 			return;
 		}
 		
-		$scope.shuffleOn = true;
+		$this.shuffleOn = true;
 		var copyOfTrackIDs = trackIDs.slice();
 		var newTrackIndex = [];
 		
@@ -74,7 +79,7 @@ app.controller('PlayerControl', function($scope, $rootScope){
 		shuffleList = newTrackIndex;
 		trackIDs = shuffleList;
 		
-		$scope.playSong(trackIDs[0]);
+		$this.playSong(trackIDs[0]);
 	}
 	
 	$rootScope.$on('albumLoaded', function(eventInfo, incomingTrackIds) {
@@ -83,25 +88,24 @@ app.controller('PlayerControl', function($scope, $rootScope){
 	})
 	
 	$rootScope.$on('playClicked', function(eventInfo, songId){
-	$scope.playSong(songId);
+	$this.playSong(songId);
 	});
 
 	$rootScope.$on('pauseClicked', function(eventInfo){
-	$scope.pauseSong();
+	$this.pauseSong();
 	});
 	
 	audio.addEventListener('play', function(){
-		console.log($scope.currentSong);
-		$rootScope.$broadcast('play', $scope.currentSong);
+		$rootScope.$broadcast('play', $this.currentSong);
 	});
 	audio.addEventListener('pause', function(){
 		$rootScope.$broadcast('pause');
 	});
 	audio.addEventListener('ended', function() {
-		$scope.nextSong();
+		$this.nextSong();
 	});	
 	
-	$scope.progressBarClick = function($event) {
+	$this.progressBarClick = function($event) {
 		var totalWidth;
 		var percentComplete;
 		var targetTime;
@@ -113,12 +117,3 @@ app.controller('PlayerControl', function($scope, $rootScope){
 		audio.currentTime = targetTime;
 	}
 });
-
-
-
-
-
-
-
-
-
