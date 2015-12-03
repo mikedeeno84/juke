@@ -106,8 +106,7 @@ app.controller('PlayerControl', function($scope, $rootScope){
 		var percentComplete;
 		var targetTime;
 		
-		if ($event.target.className === 'progress') totalWidth = $event.target.clientWidth;
-		else totalWidth = $event.target.parentElement.clientWidth;
+		totalWidth = $event.currentTarget.clientWidth
 
 		percentComplete = $event.layerX / totalWidth;
 		targetTime = audio.duration * percentComplete;
